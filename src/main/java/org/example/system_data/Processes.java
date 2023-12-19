@@ -3,25 +3,30 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Processes {
-    private ArrayList<String> processes;
+    private ArrayList<List<String>> processes;
 
-    public ArrayList<String> getProcesses() {
-        checkProcesses();
+    public ArrayList<List<String>> getProcesses() {
+        updateProcesses();
         return this.processes;
     }
 
-    private void checkProcesses () {
+    private void updateProcesses() {
         try {
             Process process = new ProcessBuilder("tasklist").start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            ArrayList<String> arr = new ArrayList<>();
+            ArrayList<List<String>> arr = new ArrayList<>();
             String line;
 
             while ((line = reader.readLine()) != null) {
-                arr.add(line);
+                var list = Arrays.stream(line.split("\\s{4,}"))
+                        .map(String::trim)
+                        .toList();
+                arr.add(list);
             }
 
             int exitCode = process.waitFor();

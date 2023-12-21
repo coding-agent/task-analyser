@@ -3,11 +3,13 @@ package org.example.gui;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
+import org.example.system_data.Performance;
 import org.example.system_data.Processes;
 
 public class GUI extends JFrame {
@@ -20,7 +22,31 @@ public class GUI extends JFrame {
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel(cardLayout);
 
-        add(this.processesPanel());
+        cardPanel.add(this.processesPanel());
+
+        System.out.println(new Performance().getPerformaceMap());
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu viewMenu = new JMenu("Dashboard");
+
+        JMenuItem processesMenuItem = new JMenuItem("Processes");
+        JMenuItem servicesMenuItem = new JMenuItem("Performance");
+
+        processesMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "Processes");
+            }
+        });
+
+        servicesMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "Performance");
+            }
+        });
+
+        add(cardPanel);
     }
 
     private JPanel processesPanel(){
@@ -35,7 +61,15 @@ public class GUI extends JFrame {
         processesData.remove(1);
 
         for(List<String> data : processesData) {
-            tableModel.addRow(new Vector<>(data));
+            var len = data.size();
+            if (len==4){
+                Vector<String> row = new Vector<>(4);
+                row.add(data.get(0));
+                row.add(data.get(1));
+                row.add(data.get(2));
+                row.add(data.get(3).replaceAll("[^\\p{Print}]", "."));
+                tableModel.addRow(row);
+            }
         }
 
         JTable table = new JTable(tableModel);
@@ -44,5 +78,14 @@ public class GUI extends JFrame {
         this.processesPanel.add(scrollPane, BorderLayout.CENTER);
 
         return this.processesPanel;
+    }
+
+    private JPanel performance() {
+        JPanel panel = new JPanel();
+
+        JLabel label = new JLabel("hey");
+        panel.add(label);
+
+        return panel;
     }
 }

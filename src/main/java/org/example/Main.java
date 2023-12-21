@@ -5,7 +5,6 @@ import org.example.gui.*;
 
 public class Main {
     public static void main(String[] args) {
-        Processes processes = new Processes();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

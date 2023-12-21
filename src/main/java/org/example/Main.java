@@ -1,6 +1,5 @@
 package org.example;
 import javax.swing.*;
-import org.example.system_data.*;
 import org.example.gui.*;
 
 public class Main {

@@ -21,6 +21,7 @@ public class Performance {
         this.processors = osBean.getAvailableProcessors();
 
         this.threadCount = threadBean.getThreadCount();
+
     }
 
 
